@@ -133,3 +133,6 @@ dmypy.json
 
 # ignore token file
 /token.txt
+
+# ignore data files
+.json
