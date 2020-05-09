@@ -14,7 +14,7 @@ class ScheduledEvent:
         self.day = day.lower().capitalize()
         self.time = time
         self.timezone = 'Europe/London'
-        self.date = self.get_datetime().to_date_string()
+        self.date = self.get_initial_date()
 
         self.has_triggered = False
 
@@ -36,8 +36,19 @@ class ScheduledEvent:
             'announce_message_id': self.announce_message_id
         }
 
+    def get_initial_date(self):
+        # Gets the nearest date which matches the day string given
+        datetime = pendulum.from_format(f'{self.day} {self.time}', 'ddd HH:mm', tz=pendulum.timezone(self.timezone))
+        # If the time is in the past then add a week
+        if datetime.is_past():
+            datetime = datetime.add(weeks=1)
+        return datetime.to_date_string()
+
     def get_datetime(self):
-        return pendulum.from_format(f'{self.day} {self.time}', 'ddd HH:mm', tz=pendulum.timezone(self.timezone))
+
+        datetime = pendulum.from_format(f'{self.date} {self.time}',
+                                        'YYYY-MM-DD HH:mm', tz=pendulum.timezone(self.timezone))
+        return datetime
 
     async def send_announcement_message(self, ctx):
 
