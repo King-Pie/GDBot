@@ -27,15 +27,10 @@ bot.add_cog(Events(bot))
 bot.add_cog(MiscCommands(bot))
 
 
-@bot.command()
-async def server(ctx):
-    await ctx.send(ctx.guild.name)
-
-
-@bot.command()
-async def create_channel(ctx):
-    channel = await ctx.guild.create_text_channel('test')
-    await channel.send('Hello!')
+# @bot.command()
+# async def create_channel(ctx):
+#     channel = await ctx.guild.create_text_channel('test')
+#     await channel.send('Hello!')
 
 
 with open('token.txt') as file:
