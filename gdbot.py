@@ -8,9 +8,10 @@ from cogs.greetings import Greetings
 from cogs.events import Events
 from cogs.misc_commands import MiscCommands
 
-description = '''An example bot to showcase the discord.ext.commands extension
-module.
-There are a number of utility commands being showcased here.'''
+
+description = '''This is a bot created for the Generally Dangerous community. 
+You can find my code at https://github.com/King-Pie/GDBot'''
+
 bot = commands.Bot(command_prefix='!', description=description)
 
 
@@ -20,6 +21,10 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+
+    # Add playing status
+    game = discord.Game("!help for commands")
+    await bot.change_presence(activity=game)
 
 # Add cogs
 bot.add_cog(Greetings(bot))
