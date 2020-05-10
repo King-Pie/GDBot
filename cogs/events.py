@@ -67,7 +67,7 @@ class ScheduledEvent:
                                                 f"{datetime.in_timezone('Europe/Stockholm').format('HH:mm')} "
                                                 f"{'Europe/Stockholm'}",
                         inline=True)
-        embed.add_field(name="What now?", value="React below with \U0001F44D if you can attend! "
+        embed.add_field(name="What now?", value=f"React below with {self.reaction_unicode} if you can attend! "
                                                 "You'll be reminded when the event starts", inline=False)
         embed.set_footer(text="Tip: You might be able to edit this event eventually")
 
