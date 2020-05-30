@@ -14,16 +14,41 @@ class MiscCommands(commands.Cog):
         await ctx.send(left + right)
 
     @commands.command()
-    async def roll(self, ctx, dice: str):
-        """Rolls a dice in NdN format."""
-        try:
-            rolls, limit = map(int, dice.split('d'))
-        except Exception:
-            await ctx.send('Format has to be in NdN!')
-            return
+    async def roll(self, ctx, *message: str):
+        """Rolls a dice in NdN format, can process multiple commands separated by a space"""
 
-        result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
-        await ctx.send(result)
+        roll_limit = 100
+        dice_side_limit = 10000
+
+        grand_total = 0
+        message_list = []
+        for command in message:
+            try:
+                rolls, limit = map(int, command.lower().split('d'))
+            except ValueError:
+                await ctx.send('Format must be NdN!')
+                return
+
+            if rolls > roll_limit:
+                await ctx.send('Rolls exceed limit')
+                return
+            if limit > dice_side_limit:
+                await ctx.send('Dice size exceeds limit')
+                return
+
+            results = [random.randint(1, limit) for r in range(rolls)]
+            roll_sum = sum(results)
+            grand_total += roll_sum
+
+            message = f'{rolls}D{limit}: {results} = {sum(results)}'
+            message_list.append(message)
+
+        if len(message_list) == 1:
+            await ctx.send(message_list[0])
+        else:
+            message = '\n'.join(message_list)
+            message += f'\nTotal = {grand_total}'
+            await ctx.send(message)
 
     @commands.command(description='For when you wanna settle the score some other way')
     async def choose(self, ctx, *choices: str):
