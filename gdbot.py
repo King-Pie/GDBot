@@ -8,9 +8,10 @@ from cogs.greetings import Greetings
 from cogs.events import Events
 from cogs.misc_commands import MiscCommands
 
-description = '''An example bot to showcase the discord.ext.commands extension
-module.
-There are a number of utility commands being showcased here.'''
+
+description = '''This is a bot created for the Generally Dangerous community. 
+You can find my code at https://github.com/King-Pie/GDBot'''
+
 bot = commands.Bot(command_prefix='!', description=description)
 
 
@@ -21,21 +22,20 @@ async def on_ready():
     print(bot.user.id)
     print('------')
 
+    # Add playing status
+    game = discord.Game("!help for commands")
+    await bot.change_presence(activity=game)
+
 # Add cogs
 bot.add_cog(Greetings(bot))
 bot.add_cog(Events(bot))
 bot.add_cog(MiscCommands(bot))
 
 
-@bot.command()
-async def server(ctx):
-    await ctx.send(ctx.guild.name)
-
-
-@bot.command()
-async def create_channel(ctx):
-    channel = await ctx.guild.create_text_channel('test')
-    await channel.send('Hello!')
+# @bot.command()
+# async def create_channel(ctx):
+#     channel = await ctx.guild.create_text_channel('test')
+#     await channel.send('Hello!')
 
 
 with open('token.txt') as file:

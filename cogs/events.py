@@ -23,6 +23,8 @@ class ScheduledEvent:
         self.announce_channel_id = None
         self.announce_message_id = None
 
+        self.reaction_unicode = u"\U0001F44D"
+
     def to_dict(self):
         return {
             'event_name': self.event_name,
@@ -65,7 +67,7 @@ class ScheduledEvent:
                                                 f"{datetime.in_timezone('Europe/Stockholm').format('HH:mm')} "
                                                 f"{'Europe/Stockholm'}",
                         inline=True)
-        embed.add_field(name="What now?", value="React below if you can attend! "
+        embed.add_field(name="What now?", value=f"React below with {self.reaction_unicode} if you can attend! "
                                                 "You'll be reminded when the event starts", inline=False)
         embed.set_footer(text="Tip: You might be able to edit this event eventually")
 
@@ -78,7 +80,7 @@ class ScheduledEvent:
         self.announce_message_id = event_message.id
         channel = self.bot.get_channel(self.announce_channel_id)
         msg = await channel.fetch_message(self.announce_message_id)
-        await msg.add_reaction(u"\U0001F44D")
+        await msg.add_reaction(self.reaction_unicode)
 
         # user = bot.get_user(self.host_id)
         # await ctx.send(f'Okay {user.mention}')
